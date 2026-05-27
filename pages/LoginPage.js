@@ -16,8 +16,12 @@ class LoginPage {
         await this.loginButton.click();
     }
     
-    async goto() {
+  async goto() {
     await this.page.goto('/web/index.php/auth/login');
+    }
+
+  async submitLogin() {
+    await this.loginButton.click();
     }
 
 }

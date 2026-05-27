@@ -1,48 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/LoginPage');
+const loginTestData = require('../test-data/loginData.json');
 
-const loginTestData = [
-  {
-    id: 'TC_LOGIN_001',
-    type: 'POSITIVE',
-    name: 'Verify login succeeds with valid credentials',
-    user: 'Admin',
-    pass: 'admin123',
-    expected: 'success',
-  },
-  {
-    id: 'TC_LOGIN_002',
-    type: 'NEGATIVE',
-    name: 'Verify error message is displayed when password is invalid',
-    user: 'Admin',
-    pass: 'wrong',
-    expected: 'error',
-  },
-  {
-    id: 'TC_LOGIN_003',
-    type: 'NEGATIVE',
-    name: 'Verify required messages are displayed when username and password are blank',
-    user: '',
-    pass: '',
-    expected: 'required',
-  },
-  {
-    id: 'TC_LOGIN_004',
-    type: 'NEGATIVE',
-    name: 'Verify error message is displayed when username is invalid',
-    user: 'WrongUser',
-    pass: 'admin123',
-    expected: 'error',
-  },
-  {
-    id: 'TC_LOGIN_005',
-    type: 'NEGATIVE',
-    name: 'Verify error message is displayed when username and password are invalid',
-    user: '!@#$%^&*()',
-    pass: '!@#$%^&*()',
-    expected: 'error',
-  },
-];
 
 test.describe('Login Data Driven', () => {
   let loginPage;
@@ -61,7 +20,7 @@ test.describe('Login Data Driven', () => {
       await test.step('Perform login action', async () => {
         if (data.expected === 'required') {
           // For blank credentials test: just click login button without entering data
-          await loginPage.loginButton.click();
+          await loginPage.submitLogin();
         } else {
           // For other tests: enter credentials and click login
           await loginPage.performLogin(data.user, data.pass);
@@ -85,7 +44,10 @@ test.describe('Login Data Driven', () => {
           // REQUIRED ASSERTION: Verify validation messages for blank fields
           // When fields are empty, "Required" messages should appear for both fields
           required: async () => {
-            await expect(loginPage.requiredMessages).toHaveCount(2);
+              await expect(loginPage.requiredMessages).toHaveText([
+              'Required',
+              'Required',
+            ]);
           },
         };
 

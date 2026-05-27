@@ -1,0 +1,43 @@
+{
+  "usernameSearch": [
+    {
+      "id": "TC_ADMIN_001",
+      "type": "POSITIVE",
+      "name": "Verify search result is displayed when searching existing username",
+      "username": "Admin",
+      "expected": "result"
+    },
+    {
+      "id": "TC_ADMIN_002",
+      "type": "NEGATIVE",
+      "name": "Verify no records found when searching invalid username",
+      "username": "InvalidUser123",
+      "expected": "noRecord"
+    }
+  ],
+  "roleFilter": [
+    {
+      "id": "TC_ADMIN_003",
+      "type": "POSITIVE",
+      "name": "Verify user list is filtered by Admin role",
+      "role": "Admin",
+      "expected": "result"
+    }
+  ],
+  "statusFilter": [
+  {
+    "id": "TC_ADMIN_004",
+    "type": "POSITIVE",
+    "name": "Verify user list is filtered by Enabled status",
+    "status": "Enabled",
+    "expected": "result"
+  },
+  {
+    "id": "TC_ADMIN_005",
+    "type": "POSITIVE",
+    "name": "Verify user list is filtered by Disabled status",
+    "status": "Disabled",
+    "expected": "result"
+  }
+]
+}

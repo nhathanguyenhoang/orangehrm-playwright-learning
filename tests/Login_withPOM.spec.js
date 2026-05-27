@@ -34,12 +34,13 @@ test.describe('OrangeHRM - Login Feature with POM', () => {
 
   test('[NEGATIVE] TC_LOGIN_003 - Verify required messages are displayed when username and password are blank', async () => {
     await test.step('Click login button without entering credentials', async () => {
-      await loginPage.loginButton.click();
+      await loginPage.submitLogin();
     });
 
-    await test.step('Verify required messages are displayed for both fields', async () => {
-      await expect(loginPage.requiredMessages).toHaveCount(2);
-    });
+    await expect(loginPage.requiredMessages).toHaveText([
+      'Required',
+      'Required',
+    ]);
   });
 
   test('[NEGATIVE] TC_LOGIN_004 - Verify error message is displayed when username is invalid', async () => {
