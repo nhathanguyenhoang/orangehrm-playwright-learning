@@ -25,7 +25,7 @@ A self-learning UI automation project using **Playwright** and the **OrangeHRM O
 ## 📁 Project Structure
 
 ```bash
-playwright_beginer/
+playwright_beginner/
 ├── .github/workflows/     # CI/CD workflow configurations
 ├── auth/                  # Stores global authentication state (user.json)
 ├── docs/                  # Project documentation
