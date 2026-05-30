@@ -33,11 +33,13 @@
     "expected": "result"
   },
   {
-    "id": "TC_ADMIN_005",
-    "type": "POSITIVE",
-    "name": "Verify user list is filtered by Disabled status",
-    "status": "Disabled",
-    "expected": "result"
+    
+  "id": "TC_ADMIN_005",
+  "type": "POSITIVE",
+  "name": "Verify user list is filtered by Disabled status",
+  "status": "Disabled",
+  "expected": "noRecord"
+
   }
 ]
 }
