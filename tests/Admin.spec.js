@@ -1,21 +1,23 @@
 const { test, expect } = require('@playwright/test');
-const { LoginPage } = require('../pages/LoginPage');
 const { AdminPage } = require('../pages/AdminPage');
 const adminSearchData = require('../test-data/adminSearchData.json');
 
+test.use({
+  storageState: './auth/user.json',
+});
+
+
 test.describe('OrangeHRM - Admin Search and Filter Feature', () => {
-  let loginPage;
   let adminPage;
 
-test.beforeEach(async ({ page }) => {
-  adminPage = new AdminPage(page);
+  test.beforeEach(async ({ page }) => {
+    adminPage = new AdminPage(page);
 
-  await test.step('Navigate to Admin page', async () => {
-    await adminPage.goto();
-
-    await expect(page).toHaveURL(/admin/);
+    await test.step('Navigate to Admin page', async () => {
+      await adminPage.goto();
+      await expect(page).toHaveURL(/admin/);
+    });
   });
-});
 
   for (const data of adminSearchData.usernameSearch) {
     test(`[${data.type}] ${data.id} - ${data.name}`, async () => {
@@ -47,17 +49,23 @@ test.beforeEach(async ({ page }) => {
     });
   }
 
-  for (const data of adminSearchData.statusFilter) {
-    test(`[${data.type}] ${data.id} - ${data.name}`, async () => {
-      await test.step('Filter users by status', async () => {
-        await adminPage.filterByStatus(data.status);
-      });
-
-      await test.step('Verify status filter result', async () => {
-        await expect(adminPage.resultRows.first()).toBeVisible();
-      });
+for (const data of adminSearchData.statusFilter) {
+  test(`[${data.type}] ${data.id} - ${data.name}`, async () => {
+    await test.step('Filter users by status', async () => {
+      await adminPage.filterByStatus(data.status);
     });
-  }
+
+    await test.step('Verify status filter result', async () => {
+      if (data.expected === 'result') {
+        await expect(adminPage.resultRows.first()).toBeVisible();
+      }
+
+      if (data.expected === 'noRecord') {
+        await expect(adminPage.noRecordsMessage).toBeVisible();
+      }
+    });
+  });
+}
 
   test('[POSITIVE] TC_ADMIN_006 - Verify reset button clears search criteria', async () => {
     await test.step('Search user by username', async () => {

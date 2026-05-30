@@ -1,320 +1,125 @@
-# 🎭 Playwright Automation Testing
+# OrangeHRM Playwright Automation
 
-A personal automation testing project built with **Playwright** using the **OrangeHRM demo website**.
-
-This project is used to practice and demonstrate:
-
-- ✅ UI automation testing
-- ✅ Page Object Model (POM)
-- ✅ Data-driven testing
-- ✅ ISTQB-style test naming
-- ✅ HTML reporting
-- ✅ GitHub Actions CI integration
-- ✅ Failure diagnostics with screenshot, video, and trace
+A self-learning UI automation project using **Playwright** and the **OrangeHRM Open Source demo website**. This project focuses on implementing clean, maintainable test scripts using modern automation design patterns.
 
 ---
 
-## 🎯 Project Objective
+## 🚀 Features & Highlights
 
-The main goal of this project is to automate the **OrangeHRM login feature** and improve the test framework step by step.
-
-This project reflects the learning journey from:
-
-1. Basic script version
-2. Reusable function version
-3. Page Object Model (POM) version
-4. Data-driven test version
-
-The repository keeps both:
-- **stable final test files** for execution
-- **learning/practice files** to show progress
+- **Page Object Model (POM):** Enhances code reusability and maintainability.
+- **Data-Driven Testing:** Utilizes JSON files to execute tests with multiple datasets.
+- **Session Reusability:** Leverages Playwright's `storageState` to reuse login sessions, reducing execution time.
+- **CI/CD Integration:** Configured with GitHub Actions for automated test runs on push/pull requests.
+- **Rich Reporting:** Generates comprehensive HTML reports for test execution analysis.
 
 ---
 
-## 📦 Tech Stack
+## 🛠️ Tech Stack
 
-| Technology | Version | Purpose |
-|-----------|---------|---------|
-| Playwright | ^1.58.2 | End-to-end test automation |
-| Node.js | v14+ | Runtime environment |
-| JavaScript | ES6+ | Programming language |
+- **Framework:** Playwright (JavaScript)
+- **Runtime:** Node.js
+- **CI/CD:** GitHub Actions
 
 ---
 
 ## 📁 Project Structure
 
 ```bash
-playwright_beginer/
-├── .github/
-│   └── workflows/
-│       └── playwright.yml              # GitHub Actions workflow
-├── pages/
-│   └── LoginPage.js                    # Page Object for login page
-├── tests/
-│   ├── Login_withPOM.spec.js           # Stable POM-based login tests
-│   └── Login_dataDriven.spec.js        # Final scalable data-driven login tests
-├── practice/
-│   ├── login-basic-learning.js         # Earlier reusable-function learning version
-│   └── my-script-learning.js           # Basic script experiments
-├── playwright.config.js                # Playwright configuration
-├── jsconfig.json                       # JavaScript configuration
-├── package.json                        # Dependencies
-├── package-lock.json                   # Lock file
-└── README.md                           # Project documentation
+playwright_beginner/
+├── .github/workflows/     # CI/CD workflow configurations
+├── auth/                  # Stores global authentication state (user.json)
+├── docs/                  # Project documentation
+├── pages/                 # Page Object Model (POM) classes
+│   ├── LoginPage.js
+│   └── AdminPage.js
+├── practice/              # Scratchpad for learning & experiments
+├── test-data/             # JSON files for data-driven testing
+│   ├── loginData.json
+│   └── adminSearchData.json
+├── tests/                 # Test specifications
+│   ├── auth/
+│   │   └── auth.setup.spec.js # Handles global login setup
+│   ├── Login_dataDriven.spec.js
+│   ├── Login_withPOM.spec.js
+│   └── Admin.spec.js
+├── playwright.config.js   # Playwright configuration file
+├── package.json
+└── README.md
 ```
 
 ---
 
-## ✅ Stable Test Coverage
+## 📊 Test Coverage
 
-The final stable login scenarios include:
-
-- 🔐 Valid login with correct username and password
-- ❌ Invalid login with wrong password
-- ❌ Invalid login with wrong username
-- ⚠️ Required validation for blank username and password
-
----
-
-## 🧪 Learning / Practice Files
-
-The `practice/` folder contains earlier learning versions, such as:
-
-- basic locator practice
-- reusable function approach
-- early script experiments
-
-These files are kept to show the learning progression, but they are **not intended to be part of the final stable CI suite**.
+| Module | Test Case Description | Type |
+| :--- | :--- | :--- |
+| **Auth** | Valid login & Session saving | Setup / Happy Path |
+| **Login** | Valid login using POM | Happy Path |
+| | Invalid password | Negative |
+| | Invalid username | Negative |
+| | Invalid username and password | Negative |
+| | Blank username/password validation | Edge Case |
+| **Admin** | Search by an existing username | Functional |
+| | Search by a non-existent username | Negative |
+| | Filter users by User Role | Functional |
+| | Filter users by Status | Functional |
+| | Reset search form validation | Functional |
 
 ---
 
-## 🚀 Quick Start
+## ⚙️ Getting Started
 
-### Prerequisites
+### 1. Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed.
 
-- Node.js v14 or higher
-- npm or yarn
-
-### Installation
-
+### 2. Installation
+Clone the repository and install the dependencies:
 ```bash
-# Clone repository
-git clone <repository-url>
-cd playwright_beginer
-
-# Install dependencies
 npm install
-
-# Install Playwright browsers
 npx playwright install
 ```
 
+### 3. Generate Login Session (`storageState`)
+Run the authentication setup first to generate the login session (`auth/user.json`). This prevents logging in repeatedly before every single test case:
+```bash
+npx playwright test tests/auth/auth.setup.spec.js --headed
+```
+
 ---
 
-## ▶️ Running Tests
+## 🧪 Running Tests
 
-### Run all stable tests
-
+Run all tests in headless mode:
 ```bash
 npx playwright test
 ```
 
-### Run specific test file
-
+Run a specific test file:
 ```bash
-npx playwright test tests/Login_withPOM.spec.js
 npx playwright test tests/Login_dataDriven.spec.js
+# Or
+npx playwright test tests/Admin.spec.js
 ```
 
-### Run with browser visible
-
+Run tests with browser visible (Headed mode):
 ```bash
 npx playwright test --headed
 ```
 
-### Run in debug mode
-
-```bash
-npx playwright test --debug
-```
-
-### Run specific test by name
-
-```bash
-npx playwright test -g "TC_LOGIN"
-```
-
-### View test report
-
+View HTML Test Report:
 ```bash
 npx playwright show-report
 ```
-
----
-
-## 🧾 Main Test Scenarios
-
-### `Login_withPOM.spec.js`
-
-Tests implemented using the Page Object Model approach:
-
-- Valid login
-- Invalid password
-- Blank credentials
-- Invalid username
-
-### `Login_dataDriven.spec.js`
-
-Data-driven testing with reusable test logic and structured test data.
-
-Example:
-
-```javascript
-const loginTestData = [
-  {
-    id: 'TC_LOGIN_001',
-    type: 'POSITIVE',
-    name: 'Verify login succeeds with valid credentials',
-    user: 'Admin',
-    pass: 'admin123',
-    expected: 'success',
-  },
-  {
-    id: 'TC_LOGIN_002',
-    type: 'NEGATIVE',
-    name: 'Verify error message is displayed when password is invalid',
-    user: 'Admin',
-    pass: 'wrong',
-    expected: 'error',
-  },
-];
-```
-
-**Benefits:**
-- easy to add or update test scenarios
-- reusable test logic
-- simplified maintenance
-- clearer test reports
-
----
-
-## 🐛 Troubleshooting
-
-### Error: `Cannot find module`
-
-Check import paths carefully.
-
-```javascript
-// ✅ Correct
-const { LoginPage } = require('../pages/LoginPage');
-```
-
-### Error: `Tests timeout`
-
-Possible causes:
-
-- unstable public demo environment
-- running too many tests in parallel
-- outdated practice files still included in the main suite
-
-### Error: `Browser not installed`
-
-```bash
-npx playwright install
-```
-
----
-
-## 📊 Test Reports
-
-After running tests, you can open the HTML report:
-
-```bash
-npx playwright show-report
-```
-
-The report includes:
-
-- ✅ passed tests
-- ❌ failed tests
-- ⏱️ execution time
-- 📸 screenshots on failure
-- 🎥 videos on failure
-- 🧵 trace on retry
-
----
-
-## 🔄 CI/CD
-
-This project uses **GitHub Actions** to:
-
-- install dependencies
-- install Playwright browsers
-- run automated tests
-- upload the HTML report artifact
-
-This simulates a basic automated UI test execution pipeline.
-
----
-
-## 📚 Key Learning Outcomes
-
-Through this project, I practiced:
-
-- writing Playwright UI tests
-- improving test reusability
-- converting basic scripts into POM structure
-- applying data-driven testing
-- designing structured test names
-- preparing a project for CI execution
-
----
-
-## 🔮 Future Improvement
-
-Planned next steps:
-
-- add more OrangeHRM features beyond login
-- create more page objects
-- improve assertions and stability
-- expand CI pipeline usage
-- move larger test data sets into separate files
 
 ---
 
 ## 📝 Notes
 
-This project is built mainly for **learning** and **portfolio** purposes.
-
-The focus is not only on making tests pass, but also on improving:
-
-- structure
-- readability
-- maintainability
-- automation mindset
+- This project is primarily built for learning, practicing automation best practices, and building a portfolio.
+- Key focus areas: Framework architecture, clean code principles, and optimized test execution using global setup.
 
 ---
 
-## 👩‍💻 Author
+## 👤 Author
 
-**Nguyen Hoang Nhat Ha**
-
----
-
-## 📚 Resources
-
-- [Playwright Documentation](https://playwright.dev)
-- [Page Object Model Pattern](https://www.saucedlabs.com/blog/page-object-model)
-- [Playwright Best Practices](https://playwright.dev/docs/best-practices)
-
----
-
-## 📄 License
-
-ISC
-
----
-
-**Last Updated:** April 27, 2026
-
-**Happy Testing! 🚀**
+- **Nguyen Hoang Nhat Ha** - *QA Engineer / System Verification Tester*

@@ -2,6 +2,7 @@ const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/LoginPage');
 const loginTestData = require('../test-data/loginData.json');
 
+test.use({ storageState: undefined });
 
 test.describe('Login Data Driven', () => {
   let loginPage;
