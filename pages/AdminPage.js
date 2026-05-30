@@ -49,6 +49,13 @@ class AdminPage {
   async resetSearch() {
     await this.resetButton.click();
   }
+  async getFirstResultRowText() {
+  return await this.resultRows.first().textContent();
+}
+
+async isNoRecordsDisplayed() {
+  return await this.noRecordsMessage.isVisible().catch(() => false);
+}
 }
 
 module.exports = { AdminPage };
