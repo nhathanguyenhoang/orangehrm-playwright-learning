@@ -1,6 +1,5 @@
 import { defineConfig } from '@playwright/test';
 
-//config all project
 export default defineConfig({
   testDir: './tests',
   timeout: 60000,
@@ -20,15 +19,26 @@ export default defineConfig({
         ['html', { open: 'never' }],
       ],
 
-  // config browser/page runtime
-      use: {
+  use: {
     baseURL: 'https://opensource-demo.orangehrmlive.com',
-    storageState: 'auth/user.json',
     headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    //screenshot: 'on',
-    //video: 'on',
     trace: 'on-first-retry',
   },
+
+  projects: [
+    {
+      name: 'setup',
+      testMatch: /auth\.setup\.spec\.js/,
+      use: {
+        storageState: undefined,
+      },
+    },
+    {
+      name: 'tests',
+      testIgnore: /auth\.setup\.spec\.js/,
+      dependencies: ['setup'],
+    },
+  ],
 });
