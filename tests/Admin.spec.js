@@ -56,12 +56,12 @@ for (const data of adminSearchData.statusFilter) {
     });
 
     await test.step('Verify status filter result', async () => {
-      if (data.expected === 'result') {
-        await expect(adminPage.resultRows.first()).toBeVisible();
-      }
+      const rowCount = await adminPage.resultRows.count();
 
-      if (data.expected === 'noRecord') {
-        await expect(adminPage.noRecordsMessage).toBeVisible();
+      if (rowCount > 0) {
+        await expect(adminPage.resultRows.first()).toContainText(data.status);
+      } else {
+        await expect(adminPage.resultRows).toHaveCount(0);
       }
     });
   });
