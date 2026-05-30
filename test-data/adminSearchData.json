@@ -33,13 +33,20 @@
     "expected": "result"
   },
   {
-    
   "id": "TC_ADMIN_005",
   "type": "POSITIVE",
   "name": "Verify user list is filtered by Disabled status",
   "status": "Disabled",
-  "expected": "noRecord"
-
+  "expected": "resultOrNoRecord"
+    }
+],
+"resetFilter": [
+  {
+    "id": "TC_ADMIN_006",
+    "type": "POSITIVE",
+    "name": "Verify reset button clears search criteria",
+    "username": "Admin",
+    "expected": "reset"
   }
 ]
 }
