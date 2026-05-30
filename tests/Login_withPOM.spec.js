@@ -1,8 +1,6 @@
 const { test, expect } = require('@playwright/test');
 const { LoginPage } = require('../pages/LoginPage');
 
-test.use({ storageState: undefined });
-
 test.describe('OrangeHRM - Login Feature with POM', () => {
   let loginPage;
 
@@ -19,7 +17,7 @@ test.describe('OrangeHRM - Login Feature with POM', () => {
       await loginPage.performLogin('Admin', 'admin123');
     });
 
-    await test.step('Verify user is redirected to the admin page', async () => {
+    await test.step('Verify user is redirected to Dashboard page', async () => {
       await expect(page).toHaveURL(/dashboard/);
     });
   });
