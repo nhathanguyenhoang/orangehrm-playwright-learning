@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sprint 01 - Automation Thinking Notes</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-soft: #e0ecff;
+      --border: #e5e7eb;
+      --code-bg: #111827;
+      --code-text: #e5e7eb;
+      --warning-bg: #fff7ed;
+      --warning-border: #fed7aa;
+      --success-bg: #ecfdf5;
+      --success-border: #a7f3d0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px 20px 80px;
+    }
+
+    header {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 28px;
+      box-shadow: 0 18px 45px rgba(37, 99, 235, 0.22);
+    }
+
+    header h1 {
+      margin: 0 0 12px;
+      font-size: 36px;
+      line-height: 1.2;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 17px;
+      opacity: 0.95;
+    }
+
+    .toc {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+
+    .toc h2 {
+      margin-top: 0;
+    }
+
+    .toc ol {
+      columns: 2;
+      padding-left: 22px;
+    }
+
+    .toc a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 22px;
+      box-shadow: 0 8px 28px rgba(15, 23, 42, 0.04);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #111827;
+      font-size: 24px;
+      border-left: 5px solid var(--primary);
+      padding-left: 12px;
+    }
+
+    h3 {
+      margin-top: 24px;
+      color: #1f2937;
+      font-size: 19px;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    ul, ol {
+      padding-left: 24px;
+    }
+
+    li {
+      margin: 6px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    th, td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--primary-soft);
+      color: #1e3a8a;
+      font-weight: 700;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    code {
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 18px;
+      border-radius: 14px;
+      overflow-x: auto;
+      margin: 16px 0;
+      font-size: 14px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .note {
+      background: var(--primary-soft);
+      border-left: 5px solid var(--primary);
+      padding: 16px 18px;
+      border-radius: 12px;
+      margin: 16px 0;
+    }
+
+    .warning {
+      background: var(--warning-bg);
+      border: 1px solid var(--warning-border);
+      padding: 16px 18px;
+      border-radius: 12px;
+      margin: 16px 0;
+    }
+
+    .success {
+      background: var(--success-bg);
+      border: 1px solid var(--success-border);
+      padding: 16px 18px;
+      border-radius: 12px;
+      margin: 16px 0;
+    }
+
+    .flow {
+      font-family: Consolas, Monaco, monospace;
+      background: #f9fafb;
+      border: 1px dashed #cbd5e1;
+      padding: 16px;
+      border-radius: 12px;
+      white-space: pre-line;
+      margin: 14px 0;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      margin-top: 40px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 28px;
+      }
+
+      header h1 {
+        font-size: 28px;
+      }
+
+      .toc ol {
+        columns: 1;
+      }
+
+      section {
+        padding: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <h1>Sprint 01 - Automation Thinking Notes</h1>
+      <p>Ghi chú tư duy sau Sprint 01: cấu trúc code, POM, data-driven, storageState, debug Playwright, CI/CD và cách viết test case có logic.</p>
+    </header>
+
+    <nav class="toc">
+      <h2>Mục lục</h2>
+      <ol>
+        <li><a href="#overview">Tư duy tổng quan khi đọc project</a></li>
+        <li><a href="#structure">Tư duy cấu trúc code</a></li>
+        <li><a href="#pom">Tư duy POM</a></li>
+        <li><a href="#pom-function">Step viết một function trong POM</a></li>
+        <li><a href="#testcase">Tư duy viết test case</a></li>
+        <li><a href="#data-flow">Tư duy dữ liệu, Locator và Flow chạy của test</a></li>
+        <li><a href="#data-driven">Tư duy Data Driven Testing</a></li>
+        <li><a href="#storage-state">Tư duy Storage State</a></li>
+        <li><a href="#debug-mindset">Tư duy debug Playwright</a></li>
+        <li><a href="#debug-practice">Cách debug Playwright thực tế</a></li>
+        <li><a href="#logic">Tư duy logic code</a></li>
+        <li><a href="#assertion">Tư duy Assertion</a></li>
+        <li><a href="#cicd">Tư duy CI/CD</a></li>
+        <li><a href="#bugs">Bảng lỗi Sprint 01 đã gặp</a></li>
+        <li><a href="#before-test">Checklist trước khi viết test mới</a></li>
+        <li><a href="#after-test">Checklist sau khi viết test</a></li>
+      </ol>
+    </nav>
+
+    <section id="overview">
+      <h2>1. Tư duy tổng quan khi đọc một project Playwright</h2>
+      <p>Khi nhìn vào một project automation, không nên đọc từng file ngẫu nhiên. Nên đọc theo flow tổng thể trước.</p>
+      <div class="flow">playwright.config.js
+↓
+auth/setup
+↓
+spec file
+↓
+page object
+↓
+test data
+↓
+report / trace / screenshot</div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Thành phần</th>
+            <th>Vai trò</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>playwright.config.js</code></td><td>Quy định cách test chạy</td></tr>
+          <tr><td><code>auth.setup.spec.js</code></td><td>Chuẩn bị session đăng nhập</td></tr>
+          <tr><td><code>*.spec.js</code></td><td>Kịch bản test</td></tr>
+          <tr><td><code>pages/</code></td><td>Chứa locator và action</td></tr>
+          <tr><td><code>test-data/</code></td><td>Chứa dữ liệu test</td></tr>
+          <tr><td>report / trace / video</td><td>Dùng để debug khi fail</td></tr>
+        </tbody>
+      </table>
+
+      <div class="note">
+        <strong>Tư duy chính:</strong>
+        <div class="flow">Config quyết định cách test chạy.
+Spec quyết định test làm gì.
+POM quyết định thao tác trên UI ra sao.
+Data quyết định input/output.
+Report cho biết test fail ở đâu.</div>
+      </div>
+    </section>
+
+    <section id="structure">
+      <h2>2. Tư duy cấu trúc code</h2>
+      <p>Một automation project tốt không nên viết tất cả trong một file. Cần tách theo trách nhiệm.</p>
+      <div class="flow">Spec file
+→ mô tả test scenario
+
+Page Object
+→ mô tả UI element và action
+
+Test Data
+→ mô tả dữ liệu đầu vào và expected result
+
+Config
+→ mô tả môi trường chạy test</div>
+
+      <p>Ví dụ <code>Admin.spec.js</code> không nên biết locator chi tiết của username input. Nó chỉ nên gọi:</p>
+      <pre><code>await adminPage.searchByUsername(data.username);</code></pre>
+      <p>Còn locator thật nên nằm trong <code>AdminPage.js</code>.</p>
+
+      <div class="success">
+        <strong>Tư duy:</strong>
+        <ul>
+          <li>Test case nên đọc giống manual test step.</li>
+          <li>Locator nên nằm trong Page Object.</li>
+          <li>Data nên nằm ngoài test logic.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="pom">
+      <h2>3. Tư duy POM</h2>
+      <p>POM không chỉ để giảm code. POM dùng để gom locator và action về một nơi, giúp spec dễ đọc và dễ bảo trì.</p>
+      <ul>
+        <li>Gom locator về một nơi</li>
+        <li>Gom action về một nơi</li>
+        <li>Giúp spec dễ đọc</li>
+        <li>Giúp sửa UI ít ảnh hưởng tới test</li>
+      </ul>
+
+      <p>Nếu locator của nút Search đổi, chỉ cần sửa trong <code>AdminPage.js</code>, không cần sửa nhiều file test.</p>
+
+      <h3>Cách đọc POM</h3>
+      <div class="flow">constructor()
+↓
+locator
+↓
+action method
+↓
+module.exports</div>
+
+      <pre><code>class AdminPage {
+  constructor(page) {
+    this.page = page;
+    this.usernameInput = page.locator('...');
+    this.searchButton = page.getByRole('button', { name: 'Search' });
+  }
+
+  async searchByUsername(username) {
+    await this.usernameInput.fill(username);
+    await this.searchButton.click();
+  }
+}</code></pre>
+
+      <div class="note">
+        <div class="flow">Locator là “đồ vật trên màn hình”.
+Method là “hành động của user”.
+Spec là “kịch bản cần kiểm tra”.</div>
+      </div>
+    </section>
+
+    <section id="pom-function">
+      <h2>4. Step viết một function trong POM</h2>
+      <p>Khi muốn thêm function mới trong Page Object, làm theo 5 bước.</p>
+
+      <h3>Bước 1: Xác định mục đích</h3>
+      <pre><code>Tôi muốn search user theo username.</code></pre>
+
+      <h3>Bước 2: Xác định element cần thao tác</h3>
+      <pre><code>username input
+search button</code></pre>
+
+      <h3>Bước 3: Tạo locator trong constructor</h3>
+      <pre><code>this.usernameInput = page.locator('.oxd-input').nth(1);
+this.searchButton = page.getByRole('button', { name: 'Search' });</code></pre>
+
+      <h3>Bước 4: Viết method hành động</h3>
+      <pre><code>async searchByUsername(username) {
+  await this.usernameInput.fill(username);
+  await this.searchButton.click();
+}</code></pre>
+
+      <h3>Bước 5: Gọi method trong spec</h3>
+      <pre><code>await adminPage.searchByUsername(data.username);</code></pre>
+
+      <h3>Checklist khi viết function</h3>
+      <ul>
+        <li>Function có làm đúng một việc chính không?</li>
+        <li>Tên function có dễ hiểu không?</li>
+        <li>Locator có nằm trong POM không?</li>
+        <li>Spec có bị dính locator không?</li>
+        <li>Function có tái sử dụng được không?</li>
+      </ul>
+    </section>
+
+    <section id="testcase">
+      <h2>5. Tư duy viết test case</h2>
+      <p>Một test case tốt nên có 3 phần:</p>
+      <div class="flow">Setup
+Action
+Assertion</div>
+
+      <h3>Ví dụ Login thành công</h3>
+      <div class="flow">Setup:
+- Mở trang login
+
+Action:
+- Nhập username
+- Nhập password
+- Click Login
+
+Assertion:
+- Kiểm tra URL chứa dashboard</div>
+
+      <pre><code>test('[POSITIVE] TC_LOGIN_001 - Verify login succeeds with valid credentials', async ({ page }) => {
+  await test.step('Login with valid username and password', async () => {
+    await loginPage.performLogin('Admin', 'admin123');
+  });
+
+  await test.step('Verify user is redirected to Dashboard page', async () => {
+    await expect(page).toHaveURL(/dashboard/);
+  });
+});</code></pre>
+
+      <div class="success">
+        <strong>Tư duy:</strong> Không viết test chỉ để chạy pass. Viết test để người khác đọc hiểu mục tiêu test.
+      </div>
+
+      <p>Một test case nên:</p>
+      <ul>
+        <li>Có tên rõ ràng</li>
+        <li>Chỉ kiểm tra một mục tiêu chính</li>
+        <li>Không phụ thuộc test khác</li>
+        <li>Có assertion rõ</li>
+        <li>Có dữ liệu test rõ</li>
+      </ul>
+    </section>
+
+
+<section id="data-flow">
+<h2>5.5. Tư duy dữ liệu, Locator và Flow chạy của test</h2>
+
+<h3>Một dòng code thực sự chạy như thế nào?</h3>
+<pre><code>await adminPage.searchByUsername(data.username);</code></pre>
+
+<div class="flow">adminSearchData.json
+↓
+Admin.spec.js
+↓
+AdminPage.js
+↓
+Playwright API
+↓
+Browser
+↓
+OrangeHRM UI
+↓
+Assertion</div>
+
+<h3>Tư duy xử lý dữ liệu</h3>
+<div class="flow">JSON
+↓
+Spec
+↓
+POM
+↓
+UI
+↓
+Assertion</div>
+
+<p>Khi test fail hãy tự hỏi:</p>
+<ul>
+<li>Data sai?</li>
+<li>Expected sai?</li>
+<li>UI thay đổi?</li>
+<li>Code lỗi?</li>
+</ul>
+
+<h3>Tư duy Locator</h3>
+<table>
+<tr><th>Mức độ</th><th>Locator</th></tr>
+<tr><td>🟢 Best</td><td>getByRole()</td></tr>
+<tr><td>🟢 Best</td><td>getByLabel()</td></tr>
+<tr><td>🟢 Best</td><td>getByPlaceholder()</td></tr>
+<tr><td>🟡 OK</td><td>CSS Selector</td></tr>
+<tr><td>🔴 Avoid</td><td>XPath dài</td></tr>
+<tr><td>🔴 Avoid</td><td>nth() quá nhiều</td></tr>
+</table>
+
+<h3>Cách đọc một function</h3>
+<pre><code>async searchByUsername(username) {
+  await this.usernameInput.fill(username);
+  await this.searchButton.click();
+}</code></pre>
+
+<p>Luôn trả lời được:</p>
+<div class="flow">Input?
+Output?
+Side Effect?</div>
+
+<h3>Business Rule → Test Case → Automation</h3>
+<div class="flow">Business Rule
+↓
+Test Case
+↓
+Automation Script</div>
+
+<p>Đừng viết test từ UI trước. Hãy hiểu business rule trước rồi mới viết testcase và automation.</p>
+</section>
+
+
+    <section id="data-driven">
+      <h2>6. Tư duy Data Driven Testing</h2>
+      <p>Data-driven chỉ nên dùng khi:</p>
+      <div class="flow">Same flow
+Different data
+Different expected result</div>
+
+      <p>Ví dụ Login có flow giống nhau:</p>
+      <div class="flow">Nhập username/password
+Click Login
+Verify result</div>
+
+      <p>Không nên dùng data-driven khi:</p>
+      <ul>
+        <li>Flow khác nhau hoàn toàn</li>
+        <li>Assertion khác quá nhiều</li>
+        <li>Phải viết quá nhiều <code>if/else</code></li>
+        <li>Test trở nên khó đọc hơn</li>
+      </ul>
+
+      <div class="warning">
+        <strong>Bài học Sprint 01:</strong>
+        <div class="flow">Không phải testcase nào cũng nhét vào loop.
+Data-driven tốt khi nó làm test gọn hơn.
+Data-driven tệ khi nó làm logic rối hơn.</div>
+      </div>
+    </section>
+
+    <section id="storage-state">
+      <h2>7. Tư duy Storage State</h2>
+      <p>Vấn đề ban đầu:</p>
+      <div class="flow">Admin test cần login.
+Login test lại cần browser chưa login.</div>
+
+      <p>Nếu dùng <code>storageState</code> global cho toàn bộ project:</p>
+      <pre><code>Login test fail vì browser đã login sẵn.</code></pre>
+
+      <p>Nếu không dùng <code>storageState</code>:</p>
+      <pre><code>Admin test bị redirect về login.</code></pre>
+
+      <p>Giải pháp đúng:</p>
+      <div class="flow">Auth setup tạo session.
+Admin test dùng session.
+Login test không dùng session.</div>
+
+      <div class="note">
+        <strong>Tư duy quan trọng:</strong> Không phải mọi test đều cần cùng một browser state.
+      </div>
+
+      <h3>Flow đúng</h3>
+      <div class="flow">setup project
+↓
+auth.setup.spec.js
+↓
+auth/user.json
+↓
+Admin.spec.js dùng storageState
+↓
+Login.spec.js chạy browser sạch</div>
+    </section>
+
+    <section id="debug-mindset">
+      <h2>8. Tư duy debug Playwright</h2>
+      <p>Khi test fail, không sửa locator ngay. Debug theo thứ tự:</p>
+      <ol>
+        <li>URL hiện tại là gì?</li>
+        <li>Browser đang login hay chưa login?</li>
+        <li><code>storageState</code> có được apply không?</li>
+        <li>Data input / expected có đúng không?</li>
+        <li>Locator có tìm đúng element không?</li>
+        <li>Assertion có đúng business rule không?</li>
+      </ol>
+
+      <h3>Bảng debug nhanh</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Hiện tượng</th>
+            <th>Nghi ngờ đầu tiên</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Expected <code>/admin/</code>, received <code>/auth/login</code></td><td>Session / storageState lỗi</td></tr>
+          <tr><td>Locator username không tìm thấy</td><td>Đang không ở login page</td></tr>
+          <tr><td>Run riêng pass, run all fail</td><td>Config / session / shared state</td></tr>
+          <tr><td>Local pass, CI fail</td><td>Environment / session / data / timeout</td></tr>
+          <tr><td>Có row lúc này, lúc khác không</td><td>Dynamic test data</td></tr>
+          <tr><td>Strict mode violation</td><td>Locator match nhiều element</td></tr>
+        </tbody>
+      </table>
+
+      <div class="warning">
+        Fail message chỉ là triệu chứng. Root cause thường nằm ở flow trước đó.
+      </div>
+    </section>
+
+    <section id="debug-practice">
+      <h2>9. Cách debug Playwright thực tế</h2>
+
+      <h3>Cách 1: Chạy riêng file</h3>
+      <pre><code>npx playwright test tests/Admin.spec.js --headed</code></pre>
+      <p>Dùng khi muốn biết file đó có tự pass không.</p>
+
+      <h3>Cách 2: Chạy toàn bộ suite</h3>
+      <pre><code>npx playwright test</code></pre>
+      <p>Dùng để phát hiện lỗi config, session hoặc shared state.</p>
+
+      <h3>Cách 3: Mở report</h3>
+      <pre><code>npx playwright show-report</code></pre>
+      <p>Dùng để xem test fail ở step nào.</p>
+
+      <h3>Cách 4: Dùng trace/video/screenshot</h3>
+      <p>Khi test fail, xem screenshot, video, trace để biết tại thời điểm fail browser đang ở trang nào.</p>
+
+      <h3>Cách 5: Dùng error message</h3>
+      <pre><code>Expected: /admin/
+Received: /auth/login</code></pre>
+      <p>Không nên hiểu là assertion sai ngay. Phải hiểu là test muốn vào Admin nhưng bị đá về Login, nghĩa là session không hợp lệ hoặc storageState không được load.</p>
+    </section>
+
+    <section id="logic">
+      <h2>10. Tư duy logic code</h2>
+      <p>Khi đọc một đoạn test code, hỏi:</p>
+      <ul>
+        <li>Dòng này thuộc Setup, Action hay Assertion?</li>
+        <li>Nó đang gọi method từ đâu?</li>
+        <li>Data lấy từ file nào?</li>
+        <li>Expected result là gì?</li>
+        <li>Nếu fail thì fail do data, state hay locator?</li>
+      </ul>
+
+      <pre><code>await adminPage.filterByStatus(data.status);</code></pre>
+
+      <p>Đọc logic:</p>
+      <div class="flow">Spec gọi action filterByStatus.
+Method nằm trong AdminPage.
+Data status lấy từ adminSearchData.json.
+Sau đó spec phải verify kết quả filter.</div>
+
+      <div class="note">
+        Không đọc code theo từng dòng rời rạc. Đọc theo chuỗi: Data → Action → UI Result → Assertion.
+      </div>
+    </section>
+
+    <section id="assertion">
+      <h2>11. Tư duy Assertion</h2>
+      <p>Assertion không nên chỉ kiểm tra “có element”. Phải kiểm tra đúng mục tiêu test.</p>
+
+      <h3>Cách yếu</h3>
+      <pre><code>await expect(resultRows.first()).toBeVisible();</code></pre>
+      <p>Cách này chỉ biết có row, không biết row có đúng status không.</p>
+
+      <h3>Cách tốt hơn</h3>
+      <pre><code>const rowCount = await adminPage.resultRows.count();
+
+if (rowCount > 0) {
+  await expect(adminPage.resultRows.first()).toContainText(data.status);
+} else {
+  await expect(adminPage.resultRows).toHaveCount(0);
+}</code></pre>
+
+      <div class="success">
+        <strong>Tư duy:</strong> Verify behavior, not just UI existence.
+      </div>
+    </section>
+
+    <section id="cicd">
+      <h2>12. Tư duy CI/CD</h2>
+      <p>CI không giống local.</p>
+      <p>Local có thể đã có:</p>
+      <div class="flow">auth/user.json
+browser cache
+network ổn
+máy mạnh</div>
+
+      <p>CI là môi trường mới. Vì vậy phải đảm bảo:</p>
+      <ul>
+        <li>Setup chạy trước</li>
+        <li>Dependencies được install</li>
+        <li>Browser được install</li>
+        <li>Session được generate</li>
+        <li>Test không phụ thuộc dữ liệu local</li>
+      </ul>
+
+      <div class="warning">
+        Nếu CI fail nhưng local pass, hãy kiểm tra environment và setup flow trước.
+      </div>
+    </section>
+
+    <section id="bugs">
+      <h2>13. Bảng lỗi Sprint 01 đã gặp</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Lỗi</th>
+            <th>Triệu chứng</th>
+            <th>Root Cause</th>
+            <th>Cách sửa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Auth setup chạy chung suite</td>
+            <td>Nhiều test fail khi run all</td>
+            <td>Setup bị xem như test thường</td>
+            <td>Dùng Playwright project dependencies</td>
+          </tr>
+          <tr>
+            <td>Login test fail khi dùng storageState</td>
+            <td>Không tìm thấy username input</td>
+            <td>Browser đã login sẵn</td>
+            <td>Không apply storageState global</td>
+          </tr>
+          <tr>
+            <td>Admin redirect về login</td>
+            <td>Received <code>/auth/login</code></td>
+            <td>Chưa load session</td>
+            <td>Chỉ Admin dùng <code>storageState</code></td>
+          </tr>
+          <tr>
+            <td>Expect sai URL</td>
+            <td>Expected admin nhưng received dashboard</td>
+            <td>Assertion sai thực tế app</td>
+            <td>Sửa expect theo URL thật</td>
+          </tr>
+          <tr>
+            <td>Disabled filter fail</td>
+            <td>Không có row hoặc no record thay đổi</td>
+            <td>Dynamic demo data</td>
+            <td>Verify business rule thay vì dữ liệu cố định</td>
+          </tr>
+          <tr>
+            <td>Strict mode violation</td>
+            <td>Locator match nhiều element</td>
+            <td>Text xuất hiện ở nhiều nơi</td>
+            <td>Narrow locator</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="before-test">
+      <h2>14. Checklist trước khi viết test mới</h2>
+      <ul>
+        <li>Test này thuộc module nào?</li>
+        <li>Có cần login không?</li>
+        <li>Có cần storageState không?</li>
+        <li>Data có ổn định không?</li>
+        <li>Nên viết riêng hay data-driven?</li>
+        <li>Locator nên đặt ở Page Object nào?</li>
+        <li>Assertion nên verify điều gì?</li>
+        <li>Nếu test fail, mình sẽ debug từ đâu?</li>
+      </ul>
+    </section>
+
+    <section id="after-test">
+      <h2>15. Checklist sau khi viết test</h2>
+      <ul>
+        <li>Chạy riêng file test.</li>
+        <li>Chạy toàn bộ suite.</li>
+        <li>Xem report nếu fail.</li>
+        <li>Kiểm tra CI nếu có push.</li>
+        <li>Đảm bảo test không phụ thuộc test khác.</li>
+        <li>Đảm bảo data không quá cố định.</li>
+        <li>Đảm bảo spec không chứa locator phức tạp.</li>
+      </ul>
+    </section>
+
+    <section id="git-workflow">
+      <h2>16. Git Workflow Summary</h2>
+      <p>Trong Sprint 01, mình không chỉ viết test mà còn thực hành workflow gần giống môi trường đi làm.</p>
+
+      <h3>Flow Git đã thực hành</h3>
+      <div class="flow">Issue
+↓
+Create branch
+↓
+Code change
+↓
+Run test local
+↓
+Commit
+↓
+Push
+↓
+Pull Request
+↓
+GitHub Actions
+↓
+Merge
+↓
+Revert nếu cần
+↓
+Fix bằng issue/branch mới</div>
+
+      <h3>Các command đã dùng</h3>
+      <pre><code>git branch
+git checkout -b feature/auth-storage-state
+git branch -m feature/auth-storage-state
+git add .
+git commit -m "Implement storage state authentication and admin tests"
+git push -u origin feature/auth-storage-state
+git fetch origin
+git checkout main
+git pull origin main
+git log --oneline --decorate -10</code></pre>
+
+      <h3>Bài học Git quan trọng</h3>
+      <ul>
+        <li><code>branch</code> dùng để làm việc riêng, không sửa trực tiếp trên <code>main</code>.</li>
+        <li><code>commit</code> là một mốc thay đổi có ý nghĩa.</li>
+        <li><code>Pull Request</code> dùng để review và merge code vào main.</li>
+        <li><code>Revert</code> không xóa lịch sử, mà tạo commit mới để đảo ngược thay đổi cũ.</li>
+        <li>Nếu PR bị revert, cách sạch hơn là tạo issue/branch mới rồi fix lại.</li>
+      </ul>
+
+      <div class="note">
+        <strong>Tư duy đi làm:</strong> Không chỉ code cho chạy pass. Phải biết đưa code lên branch, tạo PR, đọc CI, xử lý fail và rollback khi cần.
+      </div>
+    </section>
+
+    <section id="sprint-achievements">
+      <h2>17. Sprint 01 đã làm được gì</h2>
+      <p>Đây là checklist tổng kết những phần đã hoàn thành trong Sprint 01.</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Nhóm kỹ năng</th>
+            <th>Đã làm được</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Playwright Basic</td><td>Viết test với <code>test</code>, <code>expect</code>, <code>test.step</code>, <code>beforeEach</code></td></tr>
+          <tr><td>POM</td><td>Tạo <code>LoginPage</code> và <code>AdminPage</code></td></tr>
+          <tr><td>Data Driven</td><td>Tách data ra <code>loginData.json</code> và <code>adminSearchData.json</code></td></tr>
+          <tr><td>Storage State</td><td>Tạo <code>auth/user.json</code> để tái sử dụng session đăng nhập</td></tr>
+          <tr><td>Project Dependencies</td><td>Tách <code>setup</code> project chạy trước <code>tests</code> project</td></tr>
+          <tr><td>Admin Tests</td><td>Search username, filter role, filter status, reset search form</td></tr>
+          <tr><td>Login Tests</td><td>Positive, negative, required validation, data-driven login</td></tr>
+          <tr><td>CI/CD</td><td>Chạy GitHub Actions và debug CI fail</td></tr>
+          <tr><td>Git Workflow</td><td>Branch, commit, push, PR, merge, revert, issue branch</td></tr>
+          <tr><td>Debug</td><td>Phân biệt lỗi config, session, data, locator và assertion</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="sprint02-roadmap">
+      <h2>18. Chuẩn bị cho Sprint 02</h2>
+      <p>Sprint 02 nên tiếp tục mở rộng trên nền framework đã có, không học lại từ đầu.</p>
+
+      <h3>Mục tiêu Sprint 02</h3>
+      <div class="flow">Login
+↓
+Admin
+├─ Search User
+├─ Create User
+├─ Edit User
+├─ Delete User
+└─ Filter User</div>
+
+      <h3>Nội dung nên học tiếp</h3>
+      <ul>
+        <li>Create User flow</li>
+        <li>Edit User flow</li>
+        <li>Delete User flow</li>
+        <li>Reusable test data generator</li>
+        <li>Cleanup test data sau khi test chạy</li>
+        <li>Better assertions</li>
+        <li>Fixtures cho <code>LoginPage</code> và <code>AdminPage</code></li>
+        <li>Test tags như <code>@smoke</code>, <code>@regression</code></li>
+      </ul>
+
+      <div class="warning">
+        <strong>Điểm cần nhớ khi qua Sprint 02:</strong> Các flow Create/Edit/Delete cần chú ý setup data và cleanup data. Không để test này phụ thuộc kết quả của test khác.
+      </div>
+    </section>
+
+    <section id="qa-review">
+      <h2>19. Câu hỏi tự ôn sau Sprint 01</h2>
+      <p>Phần này dùng để tự học, tự grill nhẹ hoặc chuẩn bị phỏng vấn QA Automation.</p>
+
+      <h3>1. POM dùng để làm gì?</h3>
+      <p><strong>Trả lời:</strong> POM dùng để tách locator và action ra khỏi spec file. Spec chỉ mô tả test scenario, còn Page Object chịu trách nhiệm thao tác với UI. Khi UI thay đổi, mình chỉ cần sửa locator trong Page Object thay vì sửa nhiều file test.</p>
+
+      <h3>2. Khi nào nên dùng data-driven testing?</h3>
+      <p><strong>Trả lời:</strong> Khi nhiều test case có cùng flow nhưng khác input và expected result. Ví dụ login với valid user, invalid password, invalid username đều có cùng flow nhập username/password rồi click Login.</p>
+
+      <h3>3. Khi nào không nên dùng data-driven?</h3>
+      <p><strong>Trả lời:</strong> Không nên dùng khi các case có flow quá khác nhau hoặc phải viết quá nhiều <code>if/else</code>. Lúc đó test sẽ khó đọc và khó maintain hơn.</p>
+
+      <h3>4. Vì sao không apply <code>storageState</code> global cho toàn project?</h3>
+      <p><strong>Trả lời:</strong> Vì không phải test nào cũng cần trạng thái đã login. Admin test cần session đã login, nhưng Login test cần browser sạch để kiểm tra login thật. Nếu apply global, Login test có thể fail vì browser đã login sẵn.</p>
+
+      <h3>5. Vì sao dùng Playwright project dependencies?</h3>
+      <p><strong>Trả lời:</strong> Để auth setup chạy trước và tạo <code>auth/user.json</code>, sau đó các test cần authenticated session mới dùng file đó. Cách này giúp CI ổn định hơn và tránh việc setup chạy lẫn với test thường.</p>
+
+      <h3>6. Khi thấy Expected <code>/admin/</code> nhưng Received <code>/auth/login</code>, nên nghĩ gì đầu tiên?</h3>
+      <p><strong>Trả lời:</strong> Nên nghi ngờ session hoặc <code>storageState</code>. Test muốn vào Admin nhưng bị đá về Login nghĩa là browser chưa có session hợp lệ hoặc chưa load đúng <code>auth/user.json</code>.</p>
+
+      <h3>7. Vì sao Run riêng PASS nhưng Run All FAIL?</h3>
+      <p><strong>Trả lời:</strong> Thường do config, shared state, session, test data hoặc test phụ thuộc nhau. Không nên sửa locator ngay. Nên check config và state trước.</p>
+
+      <h3>8. Vì sao Disabled status filter không nên expect cứng là có row hoặc No Records Found?</h3>
+      <p><strong>Trả lời:</strong> Vì dữ liệu demo có thể thay đổi. Hôm nay không có disabled user, ngày mai có thể có. Test nên verify business rule: nếu có row thì row phải đúng status, nếu không có row thì table count bằng 0.</p>
+
+      <h3>9. Một test case tốt nên có cấu trúc gì?</h3>
+      <p><strong>Trả lời:</strong> Nên có Setup, Action và Assertion. Test name phải rõ mục tiêu, test không phụ thuộc case khác và assertion phải kiểm tra đúng behavior cần test.</p>
+
+      <h3>10. Khi CI fail nhưng local pass, nên kiểm tra gì?</h3>
+      <p><strong>Trả lời:</strong> Kiểm tra setup flow, dependencies, browser install, session generation, environment data, timeout và GitHub Actions logs. CI là môi trường sạch nên không thể phụ thuộc file hoặc cache local.</p>
+    </section>
+
+    
+<section id="anatomy">
+<h2>20. Anatomy of My Sprint 01 Project</h2>
+<table>
+<tr><th>File</th><th>Vai trò</th><th>Bài học</th></tr>
+<tr><td>playwright.config.js</td><td>Điều khiển framework</td><td>Config quyết định framework hoạt động thế nào</td></tr>
+<tr><td>auth.setup.spec.js</td><td>Tạo session</td><td>Setup khác Test Case</td></tr>
+<tr><td>auth/user.json</td><td>Lưu trạng thái login</td><td>State Management</td></tr>
+<tr><td>LoginPage.js</td><td>POM Login</td><td>Tách UI khỏi test</td></tr>
+<tr><td>AdminPage.js</td><td>POM Admin</td><td>1 function = 1 responsibility</td></tr>
+<tr><td>loginData.json</td><td>Data login</td><td>Data-driven mindset</td></tr>
+<tr><td>adminSearchData.json</td><td>Data admin</td><td>Verify business rule thay vì data cứng</td></tr>
+<tr><td>Admin.spec.js</td><td>Business Scenario</td><td>Storage State và Session Debug</td></tr>
+<tr><td>GitHub Actions</td><td>CI Pipeline</td><td>Local PASS ≠ CI PASS</td></tr>
+</table>
+</section>
+
+<section>
+      <h2>Kết luận Sprint 01</h2>
+      <p>Sprint 01 không chỉ giúp mình biết viết Playwright test. Sprint 01 giúp mình hiểu các tư duy quan trọng của automation:</p>
+      <div class="flow">Code structure
+Debug mindset
+State management
+Test data strategy
+Assertion design
+CI workflow
+Git workflow</div>
+
+      <div class="success">
+        <strong>Quan trọng nhất:</strong>
+        <p>Automation không chỉ là làm test pass. Automation là thiết kế test sao cho dễ đọc, dễ debug, dễ mở rộng và ổn định khi chạy trong nhiều môi trường.</p>
+      </div>
+    </section>
+
+    <p class="footer">Sprint 01 - Playwright Automation Learning Notes</p>
+  </main>
+</body>
+</html>
