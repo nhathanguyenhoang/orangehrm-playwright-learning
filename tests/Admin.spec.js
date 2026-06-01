@@ -1,6 +1,7 @@
 const { test, expect } = require('@playwright/test');
 const { AdminPage } = require('../pages/AdminPage');
 const adminSearchData = require('../test-data/adminSearchData.json');
+const { generateUsername, generatePassword } = require('../utils/dataGenerator');
 
 test.use({
   storageState: './auth/user.json',
@@ -95,4 +96,29 @@ test.describe('OrangeHRM - Admin Search and Filter Feature', () => {
       });
     });
   }
+
+  test('[POSITIVE] TC_ADMIN_007 - Verify admin can create a new user successfully', async () => {
+  const username = generateUsername();
+  const password = generatePassword();
+
+  await test.step('Create a new admin user', async () => {
+    await adminPage.createUser({
+      username,
+      password,
+      role: 'Admin',
+      employeeName: 'c',
+      status: 'Enabled',
+    });
+  });
+
+  await test.step('Search created user by username', async () => {
+    await adminPage.resetSearch();
+    await adminPage.searchByUsername(username);
+  });
+
+  await test.step('Verify created user is displayed in result table', async () => {
+    await expect(adminPage.resultRows.filter({ hasText: username })).toBeVisible();
+  });
 });
+});
+
